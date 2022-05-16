@@ -2,7 +2,8 @@
 tiff2parquet <- function(
     dir.tiffs    = NULL,
     n.cores      = 1,
-    dir.parquets = "parquets"
+    dir.parquets = "parquets",
+    column.names = NULL
     ) {
 
     thisFunctionName <- "tiff2parquet";
@@ -22,6 +23,8 @@ tiff2parquet <- function(
         cat("\n### ~~~~~~~~~~~~~~~~~~~~ ###\n");
         return( NULL );
         }
+
+    if(is.null(column.names)) {column.names <- c("VV", "VH", "date", "y", "x")} else {column.names <- column.names}
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     DF.dates <- tiff2parquet_get.dates(dir.tiffs = dir.tiffs);
@@ -60,7 +63,8 @@ tiff2parquet <- function(
         dir.tiffs         = dir.tiffs,
         DF.tiff.filenames = DF.tiff.filenames,
         n.cores           = n.cores,
-        dir.parquets      = dir.parquets
+        dir.parquets      = dir.parquets,
+        col.names         = column.names
         );
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
@@ -75,7 +79,8 @@ tiff2parquet_persist <- function(
     dir.tiffs         = NULL,
     DF.tiff.filenames = NULL,
     dir.parquets      = "parquets",
-    n.cores           = 1
+    n.cores           = 1,
+    col.names         = NULL
     ) {
 
     require(doParallel);
@@ -155,10 +160,10 @@ tiff2parquet_persist <- function(
             temp.rasterlayer <- raster::raster(temp.stack);
             temp.coords      <- raster::coordinates(temp.rasterlayer);
             temp.values      <- raster::getValues(x = temp.stack);
-            colnames(temp.values) <- tiff2parquet_clean.colnames(
-                x         = colnames(temp.values),
-                directory = temp.dir
-                );
+            #colnames(temp.values) <- tiff2parquet_clean.colnames(
+             #   x         = colnames(temp.values),
+              #  directory = temp.dir
+              #  );
             temp.colnames <- colnames(temp.values);
             temp.values <- as.data.frame(cbind(temp.coords, temp.values));
             temp.values[,'date'] <- rep(x = temp.date, times = nrow(temp.values));
@@ -166,6 +171,7 @@ tiff2parquet_persist <- function(
             cat("\nstr(temp.values)\n");
             print( str(temp.values)   );
             DF.data <- rbind(DF.data,temp.values);
+            DF.data <- DF.data[, col.names]
             base::remove(list = c("temp.values"))
             base::gc();
             }
