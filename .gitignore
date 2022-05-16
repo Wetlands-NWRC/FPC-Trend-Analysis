@@ -185,5 +185,8 @@ rsconnect/
 /*_files/
 
 testing_image/
+parquets-data/
 
+*.csv
+*.parquet
 # End of https://www.toptal.com/developers/gitignore/api/r,pycharm+all
