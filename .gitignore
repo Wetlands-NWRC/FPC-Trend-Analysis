@@ -184,4 +184,6 @@ rsconnect/
 # R package: bookdown caching files
 /*_files/
 
+testing_image/
+
 # End of https://www.toptal.com/developers/gitignore/api/r,pycharm+all
