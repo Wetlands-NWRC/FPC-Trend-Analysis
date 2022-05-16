@@ -20,6 +20,8 @@ preprocess.training.data <- function(
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^point_y$", replacement =   "latitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^lon$",     replacement =  "longitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^lat$",     replacement =   "latitude");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^x$", replacement =  "longitude")
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^y$", replacement =   "latitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^vv$",      replacement =         "VV");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^vh$",      replacement =         "VH");
 
