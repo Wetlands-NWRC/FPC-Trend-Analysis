@@ -1,6 +1,6 @@
-data.directory    <- "Y:/FPCA-Trend-Analysis/FPC-Experiments/Experiments/Spatial_Transferability/Widgeon_ColumbiaValley/EXP_1/AOI_A/000_DATA"
-code.directory    <- "P:/programming/remotes/FPC-Trend-Analysis/source"
-output.directory  <- "P:/programming/remotes/FPC-Trend-Analysis/testing/test_pipeline";
+data.directory    <- "/home/wetlands/projects/FPC-Testing-Data/WidgeonImg/000-data"
+code.directory    <- "/home/wetlands/programming/remotes/FPC-Trend-Analysis/source"
+output.directory  <- "/home/wetlands/programming/remotes/FPC-Trend-Analysis/testing/test_pipeline";
 
 print( data.directory );
 print( code.directory );
@@ -60,7 +60,7 @@ cat(paste0("\n# n.cores = ",n.cores,"\n"));
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 dir.geoson   <- file.path(data.directory,"training_data");
-dir.tiffs    <- file.path(data.directory,"AOI_A");
+dir.tiffs    <- file.path(data.directory,"img");
 dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
@@ -145,14 +145,12 @@ tiff2parquet(
   dir.tiffs    = dir.tiffs,
   n.cores      = n.cores,
   dir.parquets = dir.parquets,
-  column.names =
-
 );
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 compute.fpc.scores(
-  x                    = 'longitude',
-  y                    = 'latitude',
+  x                    = 'x',
+  y                    = 'y',
   date                 = 'date',
   variable             = "VV",
   RData.trained.engine = RData.trained.engine,
