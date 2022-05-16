@@ -151,20 +151,20 @@ tiff2parquet_persist <- function(
             temp.path    <- file.path(dir.tiffs,temp.dir,temp.tiff);
             cat("\ntemp.path\n");
             print( temp.path   );
-            temp.stack  <- raster::stack(x = temp.path);
-            temp.values <- raster::getValues(x = temp.stack);
+            temp.stack       <- raster::stack(x = temp.path);
+            temp.rasterlayer <- raster::raster(temp.stack);
+            temp.coords      <- raster::coordinates(temp.rasterlayer);
+            temp.values      <- raster::getValues(x = temp.stack);
             colnames(temp.values) <- tiff2parquet_clean.colnames(
                 x         = colnames(temp.values),
                 directory = temp.dir
                 );
             temp.colnames <- colnames(temp.values);
-            temp.values <- as.data.frame(temp.values);
+            temp.values <- as.data.frame(cbind(temp.coords, temp.values));
             temp.values[,'date'] <- rep(x = temp.date, times = nrow(temp.values));
-            temp.values <- temp.values[,c('date',temp.colnames)];
+            temp.values <- temp.values[,c('date',temp.colnames, 'y', 'x')];
             cat("\nstr(temp.values)\n");
             print( str(temp.values)   );
-            # cat("\ntemp.values[1:10,]\n");
-            # print( temp.values[1:10,]   );
             DF.data <- rbind(DF.data,temp.values);
             base::remove(list = c("temp.values"))
             base::gc();
