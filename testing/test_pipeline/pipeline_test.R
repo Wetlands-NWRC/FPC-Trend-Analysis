@@ -36,6 +36,7 @@ code.files <- c(
   'getData-colour-scheme.R',
   'getData-geojson.R',
   'initializePlot.R',
+  'parquet2tiff.R',
   'plot-RGB-fpc-scores.R',
   'preprocess-training-data.R',
   'tiff2parquet.R',
@@ -159,6 +160,7 @@ compute.fpc.scores(
   dir.scores           = dir.scores
 );
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+parquet2tiff()
 
 ##################################################
 print( warnings() );

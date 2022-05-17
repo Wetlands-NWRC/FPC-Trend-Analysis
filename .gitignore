@@ -187,6 +187,8 @@ rsconnect/
 testing_image/
 parquets-data/
 parquets-scores/
+*plot*/
+*scores*/
 
 *.csv
 *.parquet
