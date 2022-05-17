@@ -76,6 +76,11 @@ DF.training <- getData.geojson(
     parquet.output  = "DF-training-raw.parquet"
     );
 
+DF.training <- preprocess.training.data(
+    DF.input         = DF.training,
+    DF.colour.scheme = DF.colour.scheme
+    );
+
 DF.colour.scheme <- getData.colour.scheme(
     DF.training = DF.training
     );
@@ -83,10 +88,6 @@ DF.colour.scheme <- getData.colour.scheme(
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );
 
-DF.training <- preprocess.training.data(
-    DF.input         = DF.training,
-    DF.colour.scheme = DF.colour.scheme
-    );
 
 arrow::write_parquet(
     sink = "DF-training.parquet",
