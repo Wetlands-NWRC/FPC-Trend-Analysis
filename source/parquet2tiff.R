@@ -45,6 +45,8 @@ parquet2tiff <- function(
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 
+    fpc.xyz <- c(x, y, fpc.bands)
+
     # get parquet files from scoreds dir
     parquet.scores <- list.files(
       path = dir.scores.parquet,
@@ -62,5 +64,9 @@ parquet2tiff <- function(
        # sanitize the file path extract the tail, this is the 
        # name of the tif
        sanitized.path <- basename(scores)
+       tiff.name.out <- file.path(dir.scores.tiff, sanitized.path)
+       r <- raster::rasterFromXYZ(DF.scores[, fpc.xyz])
+       writeRaster(r, tiff.name.out, format = "GTiff")
+       remove(list = c("loads.parquet", "DF.scores", "r"))
     }
 }
