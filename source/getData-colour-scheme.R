@@ -2,7 +2,7 @@
 getData.colour.scheme <- function(
     DF.training = NULL
     ) {
-
+    # TODO move to seperate function
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     colnames(DF.training) <- tolower(colnames(DF.training));
     colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^class$",   replacement = "land_cover");
