@@ -66,6 +66,7 @@ parquet2tiff <- function(
        sanitized.path <- basename(scores)
        tiff.name.out <- file.path(dir.scores.tiff, sanitized.path)
        r <- raster::rasterFromXYZ(DF.scores[, fpc.xyz])
+       raster::crs(r) <- "EPSG:4326"
        writeRaster(r, tiff.name.out, format = "GTiff")
        remove(list = c("loads.parquet", "DF.scores", "r"))
     }
