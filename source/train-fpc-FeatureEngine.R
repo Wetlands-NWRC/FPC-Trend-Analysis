@@ -36,6 +36,7 @@ train.fpc.FeatureEngine <- function(
     require(fpcFeatures);
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+    # TODO only want this to run when the y_x is not in the input table
     y_x <- paste(x = c(y, x), collapse = "_");
     DF.training <- DF.training[,c(y,x,land.cover,date,variable)];
     DF.training[,y_x] <- apply(

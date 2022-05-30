@@ -3,9 +3,7 @@ getData.colour.scheme <- function(
     DF.training = NULL
     ) {
 
-    colnames(DF.training) <- tolower(colnames(DF.training));
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^class$", replacement = "land_cover");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^cdesc$", replacement = "land_cover");
+    ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 
     boq.land.covers     <- c("marsh","swamp","water","forest","ag","shallow_water");
     train.land.covers   <- sort(unique(DF.training[,'land_cover']));

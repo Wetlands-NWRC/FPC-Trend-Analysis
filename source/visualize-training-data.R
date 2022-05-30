@@ -34,7 +34,7 @@ visualize.training.data <- function(
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     DF.training[,'year'] <- format(x = DF.training[,'date'], format = "%Y");
     DF.training[,'lat_lon_year'] <- apply(
-        X      = DF.training[,c('y','x','year')],
+        X      = DF.training[,c('latitude','longitude','year')],
         MARGIN = 1,
         FUN    = function(x) { return(paste(x,collapse = "_")) }
         );

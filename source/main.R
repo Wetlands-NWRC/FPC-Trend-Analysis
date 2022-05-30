@@ -19,7 +19,6 @@ require(arrow);
 require(doParallel);
 require(foreach);
 require(ggplot2);
-require(ncdf4);
 require(openssl);
 require(parallel);
 require(raster);
@@ -37,6 +36,7 @@ code.files <- c(
     'getData-colour-scheme.R',
     'getData-geojson.R',
     'initializePlot.R',
+    'parquet2tiff.R',
     'persist-fpc-scores.R',
     'plot-RGB-fpc-scores.R',
     'preprocess-training-data.R',
@@ -44,7 +44,7 @@ code.files <- c(
     'train-fpc-FeatureEngine.R',
     'utils-rgb.R',
     'visualize-fpc-approximations.R',
-    'visualize-training-data.R'
+    'visualize-training-data.R',
     );
 
 for ( code.file in code.files ) {
@@ -76,6 +76,11 @@ DF.training <- getData.geojson(
     parquet.output  = "DF-training-raw.parquet"
     );
 
+DF.training <- preprocess.training.data(
+    DF.input         = DF.training,
+    DF.colour.scheme = DF.colour.scheme
+    );
+
 DF.colour.scheme <- getData.colour.scheme(
     DF.training = DF.training
     );
@@ -83,10 +88,6 @@ DF.colour.scheme <- getData.colour.scheme(
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );
 
-DF.training <- preprocess.training.data(
-    DF.input         = DF.training,
-    DF.colour.scheme = DF.colour.scheme
-    );
 
 arrow::write_parquet(
     sink = "DF-training.parquet",
@@ -161,26 +162,8 @@ compute.fpc.scores(
     dir.scores           = dir.scores
     );
 
-persist.fpc.scores(
-    dir.scores = dir.scores,
-    variable   = "VV"
-    );
-
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-plot.RGB.fpc.scores(
-    dir.tiffs            = dir.tiffs,
-    dir.scores           = dir.scores,
-    variable             = 'VV',
-    x                    = 'x',
-    y                    = 'y',
-    digits               = 4,
-    channel.red          = 'fpc_1',
-    channel.green        = 'fpc_2',
-    channel.blue         = 'fpc_3',
-    parquet.file.stem    = 'DF-tidy-scores-VV',
-    PNG.output.file.stem = 'plot-RGB-fpc-scores-VV',
-    dots.per.inch        = 300
-    );
+parquet2tiff()
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 

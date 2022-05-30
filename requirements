@@ -1,0 +1,8 @@
+R packages: CRAN
+----------
+doParallel
+foreach
+rgdal
+sf
+raster
+ggplot2

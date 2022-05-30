@@ -22,7 +22,7 @@ getData.geojson <- function(
     } else {
 
         cat(paste0("\nThe file ",parquet.output," does not yet exists; processing json files ...\n"));
-
+        # TODO throw exception if the len of geojson.files == 0
         geojson.files <- list.files(path = input.directory, pattern = "\\.geojson$");
         cat("\ngeojson.files\n");
         print( geojson.files   );

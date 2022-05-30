@@ -24,7 +24,7 @@ tiff2parquet <- function(
         return( NULL );
         }
 
-    if(is.null(column.names)) {column.names <- c("VV", "VH", "date", "y", "x")} else {column.names <- column.names}
+    if(is.null(column.names)) {column.names <- c("VV", "VH", "date", "y", "x")}
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     DF.dates <- tiff2parquet_get.dates(dir.tiffs = dir.tiffs);
@@ -161,9 +161,9 @@ tiff2parquet_persist <- function(
             temp.coords      <- raster::coordinates(temp.rasterlayer);
             temp.values      <- raster::getValues(x = temp.stack);
             #colnames(temp.values) <- tiff2parquet_clean.colnames(
-             #   x         = colnames(temp.values),
-              #  directory = temp.dir
-              #  );
+            #   x         = colnames(temp.values),
+            #   directory = temp.dir
+            #   );
             temp.colnames <- colnames(temp.values);
             temp.values <- as.data.frame(cbind(temp.coords, temp.values));
             temp.values[,'date'] <- rep(x = temp.date, times = nrow(temp.values));
@@ -171,7 +171,7 @@ tiff2parquet_persist <- function(
             cat("\nstr(temp.values)\n");
             print( str(temp.values)   );
             DF.data <- rbind(DF.data,temp.values);
-            DF.data <- DF.data[, col.names]
+            #DF.data <- DF.data[, col.names]
             base::remove(list = c("temp.values"))
             base::gc();
             }
