@@ -77,7 +77,7 @@ DF.training <- getData.geojson(
 
 DF.training <- sanitize.col.names(
   DF.input = DF.training
-)
+);
 
 DF.colour.scheme <- getData.colour.scheme(
   DF.training = DF.training
