@@ -18,7 +18,6 @@ require(arrow);
 require(doParallel);
 require(foreach);
 require(ggplot2);
-#require(ncdf4);
 require(openssl);
 require(parallel);
 require(raster);
@@ -39,6 +38,7 @@ code.files <- c(
   'parquet2tiff.R',
   'plot-RGB-fpc-scores.R',
   'preprocess-training-data.R',
+  'sanitize.R',
   'tiff2parquet.R',
   'train-fpc-FeatureEngine.R',
   'utils-rgb.R',
@@ -74,6 +74,10 @@ DF.training <- getData.geojson(
   input.directory = dir.geoson,
   parquet.output  = "DF-training-raw.parquet"
 );
+
+DF.training <- sanitize.col.names(
+  DF.input = DF.training
+)
 
 DF.colour.scheme <- getData.colour.scheme(
   DF.training = DF.training
