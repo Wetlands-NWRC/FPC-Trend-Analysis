@@ -2,22 +2,9 @@
 getData.colour.scheme <- function(
     DF.training = NULL
     ) {
-    # TODO move to seperate function
+
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-    colnames(DF.training) <- tolower(colnames(DF.training));
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^class$",   replacement = "land_cover");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^cdesc$",   replacement = "land_cover");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^point_x$", replacement =  "longitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^POINT_X$", replacement =  "longitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^point_y$", replacement =   "latitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^POINT_Y$", replacement =   "latitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^lon$",     replacement =  "longitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^lat$",     replacement =   "latitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^x$", replacement =  "longitude")
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^y$", replacement =   "latitude");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^vv$",      replacement =         "VV");
-    colnames(DF.training) <- gsub(x = colnames(DF.training), pattern = "^vh$",      replacement =         "VH");
-    ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+
     boq.land.covers     <- c("marsh","swamp","water","forest","ag","shallow_water");
     train.land.covers   <- sort(unique(DF.training[,'land_cover']));
     unknown.land.covers <- setdiff(train.land.covers,boq.land.covers);
