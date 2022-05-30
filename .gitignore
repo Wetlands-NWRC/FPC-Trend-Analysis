@@ -194,4 +194,5 @@ parquets-scores/
 *.parquet
 *.png
 *.RData
+testing/*data*/
 # End of https://www.toptal.com/developers/gitignore/api/r,pycharm+all
