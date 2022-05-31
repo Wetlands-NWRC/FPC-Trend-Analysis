@@ -1,0 +1,7 @@
+dataDir: /home/ryan/work/nwrc/programming/remotes/FPC-Trend-Analysis/testing/data
+trainingDataDir: col_sanitize
+imagesDir: childDir
+targetVariable: VV
+landCover:
+  - non_water
+  - water
