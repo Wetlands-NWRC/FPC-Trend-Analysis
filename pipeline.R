@@ -1,6 +1,5 @@
-data.directory    <- "./000-data"
+file.yaml <- "/path/to/yml/file"
 code.directory    <- "/home/wetlands/programming/remotes/FPC-Trend-Analysis/source"
-output.directory  <- "./VV";
 
 print( data.directory );
 print( code.directory );
@@ -9,9 +8,6 @@ print( output.directory );
 print( format(Sys.time(),"%Y-%m-%d %T %Z") );
 
 start.proc.time <- proc.time();
-
-# set working directory to output directory
-# setwd( output.directory );
 
 ##################################################
 require(arrow);
@@ -39,6 +35,7 @@ code.files <- c(
   'plot-RGB-fpc-scores.R',
   'preprocess-training-data.R',
   'sanitize.R',
+  'setup.R',
   'tiff2parquet.R',
   'train-fpc-FeatureEngine.R',
   'utils-rgb.R',
@@ -60,12 +57,18 @@ n.cores   <- ifelse(test = is.macOS, yes = 2, no = parallel::detectCores() - 1);
 cat(paste0("\n# n.cores = ",n.cores,"\n"));
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-dir.geoson   <- file.path(data.directory,"training_data");
-dir.tiffs    <- file.path(data.directory,"img");
+config.list <- setup.workspace(
+  config = file.yaml
+)
+
+data.directory    <- config.list$dataDir
+
+dir.geoson   <- file.path(data.directory, config.list$trainingDataDir);
+dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
 dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
-target.variable      <- 'VV';
+target.variable      <- config.list$targetVariable;
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 
@@ -104,7 +107,7 @@ print( str(DF.training)   );
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 visualize.training.data(
   DF.training      = DF.training,
-  colname.pattern  = "(VV|VH)",
+  colname.pattern  = target.variable,
   DF.colour.scheme = DF.colour.scheme,
   output.directory = "plot-training-data"
 );
@@ -159,7 +162,7 @@ compute.fpc.scores(
   x                    = 'x',
   y                    = 'y',
   date                 = 'date',
-  variable             = "VV",
+  variable             = target.variable,
   RData.trained.engine = RData.trained.engine,
   dir.parquets         = dir.parquets,
   n.cores              = n.cores,
