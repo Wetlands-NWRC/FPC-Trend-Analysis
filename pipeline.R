@@ -1,10 +1,6 @@
 file.yaml <- "/path/to/yml/file"
 code.directory    <- "/home/wetlands/programming/remotes/FPC-Trend-Analysis/source"
 
-print( data.directory );
-print( code.directory );
-print( output.directory );
-
 print( format(Sys.time(),"%Y-%m-%d %T %Z") );
 
 start.proc.time <- proc.time();
@@ -71,6 +67,11 @@ dir.scores   <- "parquets-scores";
 target.variable      <- config.list$targetVariable;
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
+
+
+print( data.directory );
+print( code.directory );
+
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 DF.training <- getData.geojson(
