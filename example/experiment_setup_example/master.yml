@@ -1,0 +1,9 @@
+EXP_1:
+  data: path/to/data
+  landCover: 
+    - landcover1
+    - landcover2
+    - landcover3
+  targetVariables:
+    - VV
+    - VH

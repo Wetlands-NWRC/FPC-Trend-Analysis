@@ -1,0 +1,4 @@
+dataDir: some/data/dir
+trainingDataDir: childDir
+imagesDir: childDir
+targetVariable: VV
