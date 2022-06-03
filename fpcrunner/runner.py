@@ -1,12 +1,9 @@
-from ctypes import Union
-from importlib.resources import contents
 import os
 import json
 import yagmail
 import subprocess
 
-from typing import Dict, List, Tuple
-from dataclasses import dataclass
+from typing import Dict, List, Tuple, Union
 
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,12 +25,13 @@ class Facilitator:
     """Runs FPCA Pipeline
     """
     
-    __RSCRIPT = os.path.join(CURRENT_DIR, '..', 'source', 'pipeline.R')
-    __R_EXE = 'Rscript'
-    
-    def __init__(self, config_file: str) -> None:
+    def __init__(self, config_file: str, out_dir: str) -> None:
         self.conf = config_file
-        self.cmd = [self.__R_EXE, self.__RSCRIPT, self.conf]
+        self.out_dir = out_dir
+        self._exe = 'Rscript'
+        self._entry_point = os.path.join(CURRENT_DIR, '..', 'source', 'pipeline.R')
+        self._code_dir = os.path.join(CURRENT_DIR, '..', 'source')
+        
     
     def run(self) -> ExitCode:
         """runs the Rscript command using the subprocess module passes
@@ -44,8 +42,10 @@ class Facilitator:
             int: integer value representing the exit code
         """
         
-        with open("stdout.txt", "wb") as out, open("stderr.txt", "wb") as err:
-            process = subprocess.Popen(self.cmd, stderr=err, stdout=out)
+        cmd = [self._exe, self._entry_point, self._code_dir, self.out_dir, self.conf]
+        
+        with open(f"{self.out_dir}/stdout.txt", "wb") as out, open(f"{self.out_dir}/stderr.txt", "wb") as err:
+            process = subprocess.Popen(cmd, stderr=err, stdout=out)
             process.communicate()
             process.kill()
             exit_code = process.wait()
@@ -53,37 +53,37 @@ class Facilitator:
         return ExitCode(exit_code)
 
 
-@dataclass
-class MailerConfig:
-    
-    def __post_init__(self):
-        conf = self.load_mailer_config()
 
-        self.username = conf[0]
-        self.password = conf[1]
-    
-    def load_mailer_config(self) -> Tuple[str, str]:
-        path = os.path.join(CURRENT_DIR, ".super_secret", 'conf.json')
-        with open(path, 'r') as config:
+class MailerConfig:
+
+    def __init__(self, config) -> None:
+        self.config = config
+
+        with open(self.config, 'r') as config:
             data = json.load(config)
-        
-        username, password = data.get("username"), data.get('password')
-        return username, password
+
+            self.username = data.get("username")
+            self.password = data.get('password')
+            self.recipient = data.get('recipient')
 
 
 class Mailer:
+    # TODO look into creating my own SMTP connection for sending emails
     """Takes an exit code and sends the appropate notification 
     to the spcified recipent
     """
-    
-    def __init__(self, exit_code: ExitCode, config: MailerConfig) -> None:
-        self.yag = yagmail.SMTP(config.username, config.password)
+    def __init__(self, exit_code: ExitCode, username, password, recipt, send_notification: bool = True) -> None:
+        self.yag = yagmail.SMTP(username, password)
+        self.recp = recipt
         
         if exit_code == 0:
-            self.on_sucesses()
+            message = self.on_sucesses()
         else:
-            self.on_fail()
+            message = self.on_fail()
         
+        if send_notification:
+            self.send_mail(message)
+
     def on_fail(self) -> list:
         message_conf = {
             "contents": ["FPC pipeline failed!"],
@@ -105,7 +105,7 @@ class Mailer:
         subject = message_conf.get("subject")
         
         self.yag.send(
-            to=None,
+            to=self.recp,
             subject=subject,
             contents=contents
         )
