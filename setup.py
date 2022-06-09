@@ -17,5 +17,8 @@ setup(
     ],
     keywords="FPCA",
     packages=find_packages(),
-    python_requires="~=3.7"
+    python_requires="~=3.7",
+    # entry_points = {
+    #     'console_scripts': []
+    # }
 )

@@ -1,6 +1,6 @@
 import json
 import yagmail
-
+import runner
 
 class MailerConfig:
 
@@ -20,7 +20,7 @@ class Mailer:
     """Takes an exit code and sends the appropate notification 
     to the spcified recipent
     """
-    def __init__(self, exit_code: ExitCode, username, password, recipt, send_notification: bool = True) -> None:
+    def __init__(self, exit_code: runner.ExitCode, username, password, recipt, send_notification: bool = True) -> None:
         self.yag = yagmail.SMTP(username, password)
         self.recp = recipt
         
