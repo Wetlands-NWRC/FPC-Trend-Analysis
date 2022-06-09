@@ -1,3 +1,7 @@
+import json
+import yagmail
+
+
 class MailerConfig:
 
     def __init__(self, config) -> None:
