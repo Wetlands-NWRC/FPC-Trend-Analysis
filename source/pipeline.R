@@ -96,8 +96,9 @@ DF.training <- query.landcover(
   land.cover = select.land.cover
 )
 
-DF.colour.scheme <- getData.colour.scheme(
-  DF.training = DF.training
+DF.colour.scheme <- getData.colour.scheme.json(
+  DF.training = DF.training,
+  colours.json = file.path(data.dir, 'colours.json')
 );
 
 DF.training <- preprocess.training.data(
