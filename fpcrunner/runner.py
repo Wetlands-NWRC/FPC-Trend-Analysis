@@ -27,9 +27,18 @@ class Facilitator:
         self.conf = config_file
         self.out_dir = out_dir
         self._exe = 'Rscript'
-        self._entry_point = os.path.join(CURRENT_DIR, '..', 'source', 'pipeline.R')
         self._code_dir = os.path.join(CURRENT_DIR, '..', 'source')
-        
+        self._entry_point = os.path.join(self._code_dir, 'pipeline.R')
+    
+    @property
+    def entry_point(self):
+        return self._entry_point
+    
+    @entry_point.setter
+    def entry_point(self, rscript: str):
+        if rscript not in os.listdir(self._code_dir):
+            raise Exception(f"{rscript}: not in source directory")
+        self._entry_point = os.path.join(CURRENT_DIR, '..', 'source', rscript)
     
     def run(self) -> ExitCode:
         """runs the Rscript command using the subprocess module passes
