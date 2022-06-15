@@ -1,25 +1,24 @@
-command.arguments <- commandArgs(trailingOnly = TRUE);
-code.directory    <- normalizePath(command.arguments[1])
-output.directory  <- normalizePath(command.arguments[2])
-config.file       <- normalizePath(command.arguments[3])
+data.directory    <- "/home/wetlands/projects/FPC-Testing-Data/WidgeonImg/000-data"
+code.directory    <- "/home/wetlands/programming/remotes/FPC-Trend-Analysis/source"
+output.directory  <- "/home/wetlands/programming/remotes/FPC-Trend-Analysis/testing/test_spatial_transfer";
 
-
-setwd(output.directory)
-print(getwd())
+print( data.directory );
 print( code.directory );
 print( output.directory );
-print(config.file )
 
 print( format(Sys.time(),"%Y-%m-%d %T %Z") );
 
 start.proc.time <- proc.time();
 
+# set working directory to output directory
+setwd( output.directory );
 
 ##################################################
 require(arrow);
 require(doParallel);
 require(foreach);
 require(ggplot2);
+#require(ncdf4);
 require(openssl);
 require(parallel);
 require(raster);
@@ -40,9 +39,7 @@ code.files <- c(
   'parquet2tiff.R',
   'plot-RGB-fpc-scores.R',
   'preprocess-training-data.R',
-  'query.R',
   'sanitize.R',
-  'setup.R',
   'tiff2parquet.R',
   'train-fpc-FeatureEngine.R',
   'utils-rgb.R',
@@ -64,22 +61,14 @@ n.cores   <- ifelse(test = is.macOS, yes = 2, no = parallel::detectCores() - 1);
 cat(paste0("\n# n.cores = ",n.cores,"\n"));
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-config.list <- setup.workspace(
-  config = config.file
-)
-
-data.directory    <- config.list$dataDir
-
-dir.geoson   <- file.path(data.directory, config.list$trainingDataDir);
-dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
+dir.geoson   <- file.path(data.directory,"training_data");
+dir.tiffs    <- file.path(data.directory,"img");
 dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
-target.variable      <- config.list$targetVariable;
-select.land.cover    <- config.list$landCover
+target.variable      <- 'VV';
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
-
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 DF.training <- getData.geojson(
@@ -91,25 +80,17 @@ DF.training <- sanitize.col.names(
   DF.input = DF.training
 );
 
-DF.training <- query.landcover(
-  DF.input   = DF.training,
-  land.cover = select.land.cover
-)
-
-DF.colour.scheme <- getData.colour.scheme.json(
-  DF.training = DF.training,
-  colours.json = file.path(data.directory, 'colours.json')
+DF.colour.scheme <- getData.colour.scheme(
+  DF.training = DF.training
 );
+
+cat("\nstr(DF.colour.scheme)\n");
+print( str(DF.colour.scheme)   );
 
 DF.training <- preprocess.training.data(
   DF.input         = DF.training,
   DF.colour.scheme = DF.colour.scheme
 );
-
-
-cat("\nstr(DF.colour.scheme)\n");
-print( str(DF.colour.scheme)   );
-
 
 arrow::write_parquet(
   sink = "DF-training.parquet",
@@ -122,7 +103,7 @@ print( str(DF.training)   );
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 visualize.training.data(
   DF.training      = DF.training,
-  colname.pattern  = target.variable,
+  colname.pattern  = "(VV)",
   DF.colour.scheme = DF.colour.scheme,
   output.directory = "plot-training-data"
 );
@@ -177,7 +158,7 @@ compute.fpc.scores(
   x                    = 'x',
   y                    = 'y',
   date                 = 'date',
-  variable             = target.variable,
+  variable             = "VV",
   RData.trained.engine = RData.trained.engine,
   dir.parquets         = dir.parquets,
   n.cores              = n.cores,
