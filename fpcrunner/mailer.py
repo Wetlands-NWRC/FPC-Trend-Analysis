@@ -7,6 +7,9 @@ from dataclasses import dataclass
 from email.message import EmailMessage
 from fpcrunner import runner
 from typing import Dict
+from jinja2 import Template
+
+current_dir = os.path.abspath(os.path.dirname(__file__))
 
     
 class Mailer:
@@ -14,12 +17,13 @@ class Mailer:
     """Takes an exit code and sends the appropate notification 
     to the spcified recipent
     """
-    def __init__(self, exit_code: runner.ExitCode) -> None:
+    def __init__(self, exit_code: runner.ExitCode, case_name: str = None) -> None:
         self._exit_code = exit_code
         self.__email_sender = 'nwrc.fpc.mailer@gmail.com'
         self.__password = os.environ.get("mailer_password", None)
         self.__email_receiver = 'ryangilberthamilton@gmail.com'
         self._em = EmailMessage()
+        self._case = "FPC-Experiment" if case_name is None else case_name
     
         self._em['From'] = self.__email_sender
         
@@ -39,13 +43,17 @@ class Mailer:
     def _on_failure(self) -> EmailMessage:
         """ sets props of unscessfull run """
         self._em['Subject'] = 'Alert: Pipeline has Failed'
-        body = 'FPCA Pipeline has Exited with a Non Zero Status\n \
-        Please check logs for more information' 
-        self._em.set_content(body)
+        with open(f"{current_dir}/../templates/on_fail_message.txt", 'r') as fp:
+            content = fp.read()
+            t = Template(content)
+            self._em.set_content(t.render(exitcode=self._exit_code, case=self._case, action="failed"))
         return None
          
 
     def send_mail(self) -> None:
+        if self.__password is None:
+            return None
+
         if self._exit_code > 0:
             self._on_failure()
         else:
