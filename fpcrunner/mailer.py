@@ -5,9 +5,8 @@ import os
 
 from dataclasses import dataclass
 from email.message import EmailMessage
+from fpcrunner import runner
 from typing import Dict
-
-import runner
 
     
 class Mailer:
@@ -17,7 +16,7 @@ class Mailer:
     """
     def __init__(self, exit_code: runner.ExitCode) -> None:
         self._exit_code = exit_code
-        self.__email_sender = 'fnwrc.pc.mailer@gmail.com'
+        self.__email_sender = 'nwrc.fpc.mailer@gmail.com'
         self.__password = os.environ.get("mailer_password", None)
         self.__email_receiver = 'ryangilberthamilton@gmail.com'
         self._em = EmailMessage()
@@ -31,7 +30,7 @@ class Mailer:
         
         body = """ FPCA Pipeline has completed and has been sucssfully moved
         to the defined mount point.
-        mnt <insert mount point>
+        <insert mount point>
         """
         self._em.set_content(body)
         return None
@@ -40,8 +39,9 @@ class Mailer:
     def _on_failure(self) -> EmailMessage:
         """ sets props of unscessfull run """
         self._em['Subject'] = 'Alert: Pipeline has failed'
-        body = """FPCA Pipeline has Exited with a Non Zero Status. Please check
-        logs for more information"""
+        body = """FPCA Pipeline has Exited with a Non Zero Status. 
+        
+        Please check logs for more information"""
         self._em.set_content(body)
         return None
          
