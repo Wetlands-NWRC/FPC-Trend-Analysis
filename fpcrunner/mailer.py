@@ -38,10 +38,9 @@ class Mailer:
     
     def _on_failure(self) -> EmailMessage:
         """ sets props of unscessfull run """
-        self._em['Subject'] = 'Alert: Pipeline has failed'
-        body = """FPCA Pipeline has Exited with a Non Zero Status. 
-        
-        Please check logs for more information"""
+        self._em['Subject'] = 'Alert: Pipeline has Failed'
+        body = 'FPCA Pipeline has Exited with a Non Zero Status\n \
+        Please check logs for more information' 
         self._em.set_content(body)
         return None
          
