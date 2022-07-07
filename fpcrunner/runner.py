@@ -17,6 +17,12 @@ class ExitCode:
     
     def __eq__(self, __o: object) -> bool:
         return self.code == __o
+    
+    def __gt__(self, __o: object) -> bool:
+        return self.code > __o
+    
+    def __str__(self) -> str:
+        return f"Exit Code: {self.code}"
 
 
 class Facilitator:
