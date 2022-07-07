@@ -1,0 +1,3 @@
+Case: {{casename}}
+FPCA Pipeline Has Failed. {{exitcode}}
+Please Check Log files for more information.
