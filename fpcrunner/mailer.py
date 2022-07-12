@@ -32,11 +32,11 @@ class Mailer:
         """ Set success body and subject line """
         self._em['Subject'] = 'Alert: Pipeline Successful'
         
-        body = """ FPCA Pipeline has completed and has been sucssfully moved
-        to the defined mount point.
-        <insert mount point>
-        """
-        self._em.set_content(body)
+        with open(f"{current_dir}../templates/on_fail_message.txt", 'r') as fp:
+            content = fp.read()
+            t = Template(content)
+            rendered = t.render(exitcode=self._exit_code, case=self._case, action="Successful")
+        self._em.set_content(rendered)
         return None
     
     

@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+from fpcrunner import tool
 from typing import Dict, List, Tuple, Union
 
 
@@ -25,7 +26,7 @@ class ExitCode:
         return f"Exit Code: {self.code}"
 
 
-class Facilitator:
+class Facilitator():
     """Runs FPCA Pipeline
     """
     
