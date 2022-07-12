@@ -23,8 +23,15 @@ train.fpc.FeatureEngine <- function(
     if(is.null(y)){ y <- "lat" }
     if(is.null(land.cover)){ land.cover <- "land_cover" }
     if(is.null(date)){ date <- "date" }
-    if(is.null(min.date)){ min.date <- min(DF.training$date, na.rm = TRUE) }
-    if(is.null(max.date)){ max.date <- max(DF.training$date, na.rm = TRUE) }
+    if(is.null(min.date)){ 
+        min.date <- format(min(DF.training$date, na.rm = TRUE), format = '%Y')
+        min.date <- as.Date(paste0(min.date, "-03-01"))
+
+    }
+    if(is.null(max.date)){ 
+        max.date <- format(max(DF.training$date, na.rm = TRUE), format = '%Y')
+        max.date <- as.Date(paste0(max.date, "-11-01"))
+    }
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 
