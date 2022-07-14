@@ -72,7 +72,7 @@ data.directory    <- config.list$dataDir
 
 dir.geoson   <- file.path(data.directory, config.list$trainingDataDir);
 dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
-dir.parquets <- file.path(data.directory, "parquets-data");
+dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
 target.variable      <- config.list$targetVariable;
