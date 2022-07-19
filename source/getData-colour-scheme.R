@@ -93,7 +93,7 @@ update.colours.json <- function(
     if(needsUpdate) {
         DF.update <- data.frame(
             land_cover = diff,
-            colours = getData.colour.scheme_random.palette(length(diff))
+            colour = getData.colour.scheme_random.palette(length(diff))
         )
         rownames(DF.update) <- diff
         DF.colour.scheme <- rbind(DF.colour.scheme, DF.update)

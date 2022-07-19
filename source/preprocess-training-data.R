@@ -45,6 +45,14 @@ preprocess.training.data <- function(
         FUN    = function(x) {return(paste(x,collapse="_"))}
         );
 
+    DF.output['year'] <- sapply(
+        X = DF.output[,c('date')],
+        FUN = function(x) {return (format(x, "%Y"))}
+    )
+
+    DF.output[,"X_Y_year" ] <- paste(DF.output[,"longitude"],
+    DF.output[,"latitude"] ,DF.output[,"year"],sep = "_");
+
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     colnames.to.retain <- c(
         'latitude',
@@ -53,8 +61,9 @@ preprocess.training.data <- function(
         'land_cover',
         'date',
         'VV',
-        'VH'
-        );
+        'VH',
+        'X_Y_year'
+    );
 
     DF.output <- DF.output[,colnames.to.retain];
 
