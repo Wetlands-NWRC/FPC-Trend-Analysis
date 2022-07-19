@@ -80,6 +80,7 @@ target.variable      <- config.list$targetVariable;
 select.land.cover    <- config.list$landCover
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
+data.normalize       <- config.list$normalize
 
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
@@ -113,7 +114,7 @@ DF.training <- reshapeData_attachScaledVariable(
     by.variable = "X_Y_year"
 )
 
-if(normalize.data){
+if(data.normalize){
     target.variable <- paste0(target.variable, '_scaled')
 }
 
