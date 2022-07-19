@@ -107,6 +107,15 @@ DF.training <- preprocess.training.data(
   DF.colour.scheme = DF.colour.scheme
 );
 
+DF.training <- reshapeData_attachScaledVariable(
+    DF.input = DF.training,
+    target.variable = target.variable,
+    by.variable = "X_Y_year"
+)
+
+if(normalize.data){
+    target.variable <- paste0(target.variable, '_scaled')
+}
 
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );
