@@ -42,7 +42,7 @@ code.files <- c(
   'preprocess-training-data.R',
   'query.R',
   'sanitize.R',
-  'scale.R',
+  'scale-data.R',
   'setup.R',
   'tiff2parquet.R',
   'train-fpc-FeatureEngine.R',
