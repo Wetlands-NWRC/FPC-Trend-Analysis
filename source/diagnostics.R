@@ -3,7 +3,7 @@ code.directory    <- normalizePath(command.arguments[1])
 output.directory  <- normalizePath(command.arguments[2])
 config.file       <- normalizePath(command.arguments[3])
 
-diagnostics.directory <- file.path(output.directory, 'diagnostics')
+
 
 setwd(output.directory)
 print(getwd())
@@ -70,7 +70,7 @@ config.list <- setup.workspace(
   config = config.file
 )
 
-data.directory    <- config.list$dataDir
+data.directory    <- file.path('..', config.list$dataDir)
 
 dir.geoson   <- file.path(data.directory, config.list$trainingDataDir);
 dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
