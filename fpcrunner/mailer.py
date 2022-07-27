@@ -32,7 +32,7 @@ class Mailer:
         """ Set success body and subject line """
         self._em['Subject'] = 'Alert: Pipeline Successful'
         
-        with open(f"{current_dir}../templates/on_success_message.txt", 'r') as fp:
+        with open(f"{current_dir}/../templates/on_success_message.txt", 'r') as fp:
             content = fp.read()
             t = Template(content)
             rendered = t.render(exitcode=self._exit_code, case=self._case, action="Successful")

@@ -132,7 +132,8 @@ visualize.training.data(
   DF.training      = DF.training,
   colname.pattern  = target.variable,
   DF.colour.scheme = DF.colour.scheme,
-  output.directory = "plot-training-data"
+  output.directory = "plot-training-data",
+  date.julian      = TRUE
 );
 gc();
 
