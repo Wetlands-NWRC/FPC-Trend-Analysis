@@ -197,8 +197,8 @@ train.fpc.FeatureEngine_score.scatterplot <- function(
         colour = guide_legend(override.aes = list(alpha =  0.75, size = 5))
         )
 
-    my.ggplot <- my.ggplot + scale_x_continuous(limits = 300*c(-1,1), breaks = seq(-300,300,100))
-    my.ggplot <- my.ggplot + scale_y_continuous(limits = 150*c(-1,1), breaks = seq(-150,150, 50))
+    my.ggplot <- my.ggplot + scale_x_continuous(limits = 1.0*c(-1,1), breaks = seq(-1.0, 1.0, 0.25))
+    my.ggplot <- my.ggplot + scale_y_continuous(limits = 0.5*c(-1,1), breaks = seq(-0.5, 0.5, 0.25))
 
     my.ggplot <- my.ggplot + ggplot2::xlab("FPC 1 score")
     my.ggplot <- my.ggplot + ggplot2::ylab("FPC 2 score")
