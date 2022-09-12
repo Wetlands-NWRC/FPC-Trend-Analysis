@@ -191,7 +191,14 @@ visualize.training.data_timeSeriesRibbonPlots <- function(
                 limits = c(  -3,3),
                 breaks = seq(-3,3,1)
                 );
-        } else {
+        } 
+        else if ( grepl(x = target.variable, pattern = "CV") ){
+             my.ggplot <- my.ggplot + scale_y_continuous(
+                limits = c(  -0.5, 0.5),
+                breaks = seq(-0.5, 0.5, 0.25)
+                );
+        }  
+        else {
             my.ggplot <- my.ggplot + scale_y_continuous(
                 limits = c(  -40,20),
                 breaks = seq(-40,20,10)
@@ -270,7 +277,14 @@ visualize.training.data_groupedTimeSeries <- function(
                 limits = c(  -3,3),
                 breaks = seq(-3,3,1)
                 );
-        } else {
+        }
+        else if ( grepl(x = target.variable, pattern = "CV") ){
+             my.ggplot <- my.ggplot + scale_y_continuous(
+                limits = c(  -0.5, 0.5),
+                breaks = seq(-0.5, 0.5, 0.25)
+                );
+        } 
+        else {
             my.ggplot <- my.ggplot + scale_y_continuous(
                 limits = c(  -40,20),
                 breaks = seq(-40,20,10)
