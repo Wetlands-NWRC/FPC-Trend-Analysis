@@ -1,7 +1,8 @@
 
 preprocess.training.data <- function(
     DF.input         = NULL,
-    DF.colour.scheme = NULL
+    DF.colour.scheme = NULL,
+    target.variable  = NULL
     ) {
 
     thisFunctionName <- "preprocess-training-data";
@@ -22,11 +23,13 @@ preprocess.training.data <- function(
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^POINT_Y$", replacement =   "latitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^lon$",     replacement =  "longitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^lat$",     replacement =   "latitude");
-    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^x$", replacement =  "longitude")
-    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^y$", replacement =   "latitude");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^x$",       replacement =  "longitude")
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^y$",       replacement =   "latitude");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^vv$",      replacement =         "VV");
     colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^vh$",      replacement =         "VH");
-
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^cv$",      replacement =         "CV");
+    colnames(DF.output) <- gsub(x = colnames(DF.output), pattern = "^ch$",      replacement =         "CH");
+    
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
     DF.output[,'date'] <- as.Date(DF.output[,'date']);
 
@@ -60,10 +63,14 @@ preprocess.training.data <- function(
         'lat_lon',
         'land_cover',
         'date',
-        'VV',
-        'VH',
         'X_Y_year'
     );
+
+    append(
+        x = colnames.to.retain,
+        values = target.variable,
+        after = 5
+    )
 
     DF.output <- DF.output[,colnames.to.retain];
 
