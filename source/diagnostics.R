@@ -105,14 +105,15 @@ DF.colour.scheme <- getData.colour.scheme.json(
 
 DF.training <- preprocess.training.data(
   DF.input         = DF.training,
-  DF.colour.scheme = DF.colour.scheme
+  DF.colour.scheme = DF.colour.scheme,
+  target.variable = target.variable
 );
 
-DF.training <- reshapeData_attachScaledVariable(
-    DF.input = DF.training,
-    target.variable = target.variable,
-    by.variable = "X_Y_year"
-)
+# DF.training <- reshapeData_attachScaledVariable(
+#     DF.input = DF.training,
+#     target.variable = target.variable,
+#     by.variable = "X_Y_year"
+# )
 
 
 cat("\nstr(DF.colour.scheme)\n");

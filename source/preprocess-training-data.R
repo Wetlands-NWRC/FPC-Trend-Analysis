@@ -66,9 +66,9 @@ preprocess.training.data <- function(
         'X_Y_year'
     );
 
-    append(
+    colnames.to.retain <- append(
         x = colnames.to.retain,
-        values = target.variable,
+        values = c(target.variable),
         after = 5
     )
 
