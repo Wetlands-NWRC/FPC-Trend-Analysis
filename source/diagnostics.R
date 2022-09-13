@@ -105,7 +105,8 @@ DF.colour.scheme <- getData.colour.scheme.json(
 
 DF.training <- preprocess.training.data(
   DF.input         = DF.training,
-  DF.colour.scheme = DF.colour.scheme
+  DF.colour.scheme = DF.colour.scheme,
+  target.variable = target.variable
 );
 
 DF.training <- reshapeData_attachScaledVariable(
