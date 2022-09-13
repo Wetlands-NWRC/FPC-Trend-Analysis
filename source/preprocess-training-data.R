@@ -68,7 +68,7 @@ preprocess.training.data <- function(
     colnames.to.retain <- append(
         x = colnames.to.retain,
         values = c(target.variable),
-        after = 5
+        after = 4
     )
 
     DF.output <- DF.output[,colnames.to.retain];
