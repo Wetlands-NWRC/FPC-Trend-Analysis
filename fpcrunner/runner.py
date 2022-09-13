@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+from fpcrunner import tool
 from typing import Dict, List, Tuple, Union
 
 
@@ -17,9 +18,15 @@ class ExitCode:
     
     def __eq__(self, __o: object) -> bool:
         return self.code == __o
+    
+    def __gt__(self, __o: object) -> bool:
+        return self.code > __o
+    
+    def __str__(self) -> str:
+        return f"Exit Code: {self.code}"
 
 
-class Facilitator:
+class Facilitator():
     """Runs FPCA Pipeline
     """
     
@@ -29,10 +36,15 @@ class Facilitator:
         self._exe = 'Rscript'
         self._code_dir = os.path.join(CURRENT_DIR, '..', 'source')
         self._entry_point = os.path.join(self._code_dir, 'pipeline.R')
+        self._exit_code = None
     
     @property
     def entry_point(self):
         return self._entry_point
+    
+    @property
+    def exit_code(self) -> ExitCode:
+        return self._exit_code
     
     @entry_point.setter
     def entry_point(self, rscript: str):
@@ -56,5 +68,6 @@ class Facilitator:
             process.communicate()
             process.kill()
             exit_code = process.wait()
-        
-        return ExitCode(exit_code)
+
+        self._exit_code = ExitCode(exit_code)
+        return None

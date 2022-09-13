@@ -4,6 +4,7 @@ output.directory  <- normalizePath(command.arguments[2])
 config.file       <- normalizePath(command.arguments[3])
 
 
+
 setwd(output.directory)
 print(getwd())
 print( code.directory );
@@ -69,7 +70,7 @@ config.list <- setup.workspace(
   config = config.file
 )
 
-data.directory    <- config.list$dataDir
+data.directory    <- file.path('..', config.list$dataDir)
 
 dir.geoson   <- file.path(data.directory, config.list$trainingDataDir);
 dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
@@ -113,9 +114,6 @@ DF.training <- reshapeData_attachScaledVariable(
     by.variable = "X_Y_year"
 )
 
-if(normalize.data){
-    target.variable <- paste0(target.variable, '_scaled')
-}
 
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );
@@ -134,7 +132,8 @@ visualize.training.data(
   DF.training      = DF.training,
   colname.pattern  = target.variable,
   DF.colour.scheme = DF.colour.scheme,
-  output.directory = "plot-training-data"
+  output.directory = "plot-training-data",
+  date.julian      = TRUE
 );
 gc();
 
@@ -174,38 +173,3 @@ visualize.fpc.approximations(
   my.seed          = my.seed,
   output.directory = "plot-fpc-approximations"
 );
-
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-tiff2parquet(
-  dir.tiffs    = dir.tiffs,
-  n.cores      = n.cores,
-  dir.parquets = dir.parquets,
-);
-
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-compute.fpc.scores(
-  x                    = 'x',
-  y                    = 'y',
-  date                 = 'date',
-  variable             = target.variable,
-  RData.trained.engine = RData.trained.engine,
-  dir.parquets         = dir.parquets,
-  n.cores              = n.cores,
-  dir.scores           = dir.scores
-);
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-parquet2tiff()
-
-##################################################
-print( warnings() );
-
-print( getOption('repos') );
-
-print( .libPaths() );
-
-print( sessionInfo() );
-
-print( format(Sys.time(),"%Y-%m-%d %T %Z") );
-
-stop.proc.time <- proc.time();
-print( stop.proc.time - start.proc.time );

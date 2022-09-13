@@ -3,6 +3,10 @@ code.directory    <- normalizePath(command.arguments[1])
 output.directory  <- normalizePath(command.arguments[2])
 config.file       <- normalizePath(command.arguments[3])
 
+code.directory <- "/home/ryan/work/nwrc/programming/remotes/FPC-Trend-Analysis/source"
+output.directory <- "./testing/test_normalization"
+config.file <- "./test-config.yml"
+
 
 setwd(output.directory)
 print(getwd())
@@ -80,6 +84,7 @@ target.variable      <- config.list$targetVariable;
 select.land.cover    <- config.list$landCover
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
+normalize.data       <- config.list$normalize
 
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
@@ -153,48 +158,27 @@ trained.fpc.FeatureEngine <- train.fpc.FeatureEngine(
   RData.output     = RData.trained.engine
 );
 gc();
-print( str(trained.fpc.FeatureEngine) );
+# print( str(trained.fpc.FeatureEngine) );
 
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-DF.training[,"latitude_longitude"] <- apply(
-  X      = DF.training[,c("latitude","longitude")],
-  MARGIN = 1,
-  FUN    = function(x) { return(paste(x = x, collapse = "_")) }
-);
+# ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+# DF.training[,"latitude_longitude"] <- apply(
+#   X      = DF.training[,c("latitude","longitude")],
+#   MARGIN = 1,
+#   FUN    = function(x) { return(paste(x = x, collapse = "_")) }
+# );
 
-visualize.fpc.approximations(
-  featureEngine    = trained.fpc.FeatureEngine,
-  DF.variable      = DF.training,
-  location         = 'latitude_longitude',
-  date             = 'date',
-  land.cover       = 'land_cover',
-  variable         = target.variable,
-  n.locations      = 10,
-  DF.colour.scheme = DF.colour.scheme,
-  my.seed          = my.seed,
-  output.directory = "plot-fpc-approximations"
-);
-
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-tiff2parquet(
-  dir.tiffs    = dir.tiffs,
-  n.cores      = n.cores,
-  dir.parquets = dir.parquets,
-);
-
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-compute.fpc.scores(
-  x                    = 'x',
-  y                    = 'y',
-  date                 = 'date',
-  variable             = target.variable,
-  RData.trained.engine = RData.trained.engine,
-  dir.parquets         = dir.parquets,
-  n.cores              = n.cores,
-  dir.scores           = dir.scores
-);
-### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
-parquet2tiff()
+# visualize.fpc.approximations(
+#   featureEngine    = trained.fpc.FeatureEngine,
+#   DF.variable      = DF.training,
+#   location         = 'latitude_longitude',
+#   date             = 'date',
+#   land.cover       = 'land_cover',
+#   variable         = target.variable,
+#   n.locations      = 10,
+#   DF.colour.scheme = DF.colour.scheme,
+#   my.seed          = my.seed,
+#   output.directory = "plot-fpc-approximations"
+# );
 
 ##################################################
 print( warnings() );
