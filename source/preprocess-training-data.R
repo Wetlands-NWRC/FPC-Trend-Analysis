@@ -62,13 +62,13 @@ preprocess.training.data <- function(
         'longitude',
         'lat_lon',
         'land_cover',
-        'date',
+        'date'
         );
 
     colnames.to.retain <- append(
         x = colnames.to.retain,
         values = c(target.variable),
-        after = 4
+        after = 5
     )
 
     DF.output <- DF.output[,colnames.to.retain];
