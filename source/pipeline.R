@@ -182,9 +182,11 @@ visualize.fpc.approximations(
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 tiff2parquet(
-  dir.tiffs    = dir.tiffs,
-  n.cores      = n.cores,
-  dir.parquets = dir.parquets,
+  dir.tiffs       = dir.tiffs,
+  n.cores         = n.cores,
+  dir.parquets    = dir.parquets,
+  target.variable = target.variable,
+  FUNC = convert.to.dB
 );
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###

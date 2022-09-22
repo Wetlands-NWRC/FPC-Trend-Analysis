@@ -68,7 +68,7 @@ tiff2parquet <- function(
         dir.parquets      = dir.parquets,
         col.names         = column.names,
         target.variable   = target.variable,
-        FUN               = FUN
+        FUN               = FUNC
         );
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###

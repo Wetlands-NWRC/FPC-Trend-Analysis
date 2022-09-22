@@ -1,4 +1,3 @@
 Case: {{casename}}
 FPCA Pipeline Has Completed. {{exitcode}}
 Results have been sucessfully moved to the mount point.
-{{Mount Point}}
