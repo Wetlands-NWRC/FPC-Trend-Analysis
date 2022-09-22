@@ -35,6 +35,7 @@ require(fpcFeatures);
 # source supporting R code
 code.files <- c(
   'compute-fpc-scores.R',
+  'conversions.R',
   'getData-colour-scheme.R',
   'getData-geojson.R',
   'initializePlot.R',
@@ -70,7 +71,7 @@ config.list <- setup.workspace(
   config = config.file
 )
 
-data.directory    <- file.path('..', config.list$dataDir)
+data.directory    <- file.path(config.list$dataDir)
 
 dir.geoson   <- file.path(data.directory, config.list$trainingDataDir);
 dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
@@ -86,7 +87,10 @@ RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 DF.training <- getData.geojson(
   input.directory = dir.geoson,
-  parquet.output  = "DF-training-raw.parquet"
+  parquet.output  = "DF-training-raw.parquet",
+  to.dB           = TRUE,
+  target.variable = target.variable,
+  func            = convert.to.dB
 );
 
 DF.training <- sanitize.col.names(
@@ -108,12 +112,6 @@ DF.training <- preprocess.training.data(
   DF.colour.scheme = DF.colour.scheme,
   target.variable = target.variable
 );
-
-DF.training <- reshapeData_attachScaledVariable(
-    DF.input = DF.training,
-    target.variable = target.variable,
-    by.variable = "X_Y_year"
-)
 
 
 cat("\nstr(DF.colour.scheme)\n");
