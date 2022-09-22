@@ -34,6 +34,7 @@ require(fpcFeatures);
 # source supporting R code
 code.files <- c(
   'compute-fpc-scores.R',
+  'conversions.R',
   'getData-colour-scheme.R',
   'getData-geojson.R',
   'initializePlot.R',
@@ -85,7 +86,10 @@ RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 DF.training <- getData.geojson(
   input.directory = dir.geoson,
-  parquet.output  = "DF-training-raw.parquet"
+  parquet.output  = "DF-training-raw.parquet",
+  to.dB = TRUE,
+  target.variable = target.variable,
+  func = convert.to.dB 
 );
 
 DF.training <- sanitize.col.names(
