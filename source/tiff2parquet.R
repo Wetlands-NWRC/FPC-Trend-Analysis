@@ -1,9 +1,11 @@
 
 tiff2parquet <- function(
-    dir.tiffs    = NULL,
-    n.cores      = 1,
-    dir.parquets = "parquets",
-    column.names = NULL
+    dir.tiffs       = NULL,
+    n.cores         = 1,
+    dir.parquets    = "parquets",
+    column.names    = NULL,
+    target.variable = NULL,
+    FUNC            = NULL
     ) {
 
     thisFunctionName <- "tiff2parquet";
@@ -64,7 +66,9 @@ tiff2parquet <- function(
         DF.tiff.filenames = DF.tiff.filenames,
         n.cores           = n.cores,
         dir.parquets      = dir.parquets,
-        col.names         = column.names
+        col.names         = column.names,
+        target.variable   = target.variable,
+        FUN               = FUN
         );
 
     ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
@@ -80,7 +84,9 @@ tiff2parquet_persist <- function(
     DF.tiff.filenames = NULL,
     dir.parquets      = "parquets",
     n.cores           = 1,
-    col.names         = NULL
+    col.names         = NULL,
+    target.variable   = NULL,
+    FUN               = NULL
     ) {
 
     require(doParallel);
@@ -175,6 +181,14 @@ tiff2parquet_persist <- function(
             base::remove(list = c("temp.values"))
             base::gc();
             }
+
+        if(!is.null(FUN)){
+            DF.data[target.variable] <- apply(
+                X = DF.data[target.variable],
+                MARGIN = 1,
+                FUN = FUN
+            )
+        }
 
         arrow::write_parquet(
             sink = file.path(dir.parquets,temp.parquet),
