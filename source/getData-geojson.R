@@ -1,7 +1,10 @@
 
 getData.geojson <- function(
     input.directory = NULL,
-    parquet.output  = "geojson.parquet"
+    parquet.output  = "geojson.parquet",
+    to.dB           = FALSE,
+    target.variable = NULL,
+    func            = NULL
     ) {
 
     thisFunctionName <- "getData.geojson";
@@ -35,6 +38,14 @@ getData.geojson <- function(
             DF.output <- rbind(DF.output,json.obj$features$properties);
             }
         cat("\n\n");
+
+        if(to.dB){
+            DF.output[target.variable] <- apply(
+                X = DF.output[target.variable],
+                MARGIN = 1,
+                FUN = func
+            )
+        }
 
         arrow::write_parquet(
             sink = parquet.output,
