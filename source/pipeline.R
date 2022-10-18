@@ -77,6 +77,7 @@ dir.tiffs    <- file.path(data.directory, config.list$imagesDir);
 dir.parquets <- "parquets-data";
 dir.scores   <- "parquets-scores";
 
+remove.mean          <- config.list$remove_mean
 target.variable      <- config.list$targetVariable;
 select.land.cover    <- config.list$landCover
 n.harmonics          <- 7;
