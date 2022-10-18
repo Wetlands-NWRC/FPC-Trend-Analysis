@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict
-from fpcrunner import rasterutils as ru
+from fpcrunner import rasutil as ru
 from fpcrunner import dirutils
 from fpcrunner import mailer
 from fpcrunner import runner

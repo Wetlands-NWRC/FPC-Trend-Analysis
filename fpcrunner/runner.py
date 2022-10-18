@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from fpcrunner import tool
+from fpcrunner import toolbox
 from typing import Dict, List, Tuple, Union
 
 

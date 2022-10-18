@@ -80,6 +80,7 @@ dir.scores   <- "parquets-scores";
 
 target.variable      <- config.list$targetVariable;
 select.land.cover    <- config.list$landCover
+remove.mean          <- config.list$remove_mean
 n.harmonics          <- 7;
 RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 
@@ -88,7 +89,7 @@ RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 DF.training <- getData.geojson(
   input.directory = dir.geoson,
   parquet.output  = "DF-training-raw.parquet",
-  to.dB           = TRUE,
+  to.dB           = FALSE,
   target.variable = target.variable,
   func            = convert.to.dB
 );
@@ -113,6 +114,11 @@ DF.training <- preprocess.training.data(
   target.variable = target.variable
 );
 
+DF.training <- normalize.remove.mean.global(
+  DF.input = DF.training,
+  target.variable = target.variable,
+  scale.data = remove.mean
+)
 
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );

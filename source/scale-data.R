@@ -94,7 +94,7 @@ normalize.remove.mean.global <- function(
 
     for (date in dates.unique) {
         # select a single date to query in the input DF by
-        date.select <- as.Date(date)
+        date.select <- as.Date(date, format="%Y-%m-%d", origin="1970-01-01")
         # print(date.select)
         DF.date <- DF.input[DF.input$date == date.select,]
 

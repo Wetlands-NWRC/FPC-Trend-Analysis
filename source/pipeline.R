@@ -87,9 +87,9 @@ RData.trained.engine <- 'trained-fpc-FeatureEngine.RData';
 DF.training <- getData.geojson(
   input.directory = dir.geoson,
   parquet.output  = "DF-training-raw.parquet",
-  to.dB = TRUE,
+  to.dB = FALSE,
   target.variable = target.variable,
-  func = convert.to.dB 
+  func = convert.to.dB
 );
 
 DF.training <- sanitize.col.names(
@@ -112,15 +112,11 @@ DF.training <- preprocess.training.data(
   target.variable  = target.variable
 );
 
-# DF.training <- reshapeData_attachScaledVariable(
-#     DF.input = DF.training,
-#     target.variable = target.variable,
-#     by.variable = "X_Y_year"
-# )
-
-# if(normalize.data){
-#     target.variable <- paste0(target.variable, '_scaled')
-# }
+DF.training <- normalize.remove.mean.global(
+  DF.input = DF.training,
+  target.variable = target.variable,
+  scale.data = remove.mean
+)
 
 cat("\nstr(DF.colour.scheme)\n");
 print( str(DF.colour.scheme)   );
@@ -186,7 +182,7 @@ tiff2parquet(
   n.cores         = n.cores,
   dir.parquets    = dir.parquets,
   target.variable = target.variable,
-  FUNC = convert.to.dB
+  FUNC            = NULL
 );
 
 ### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###

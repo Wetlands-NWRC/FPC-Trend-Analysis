@@ -1,4 +1,22 @@
-dataDir: some/data/dir
-trainingDataDir: childDir
-imagesDir: childDir
-targetVariable: VV
+paths:
+  data_dir: some/data/dir
+  training_data: childDir
+  img_dir: childDir
+
+global_settings:
+  target_var: VV
+  to_db: false
+  noise_floor: -50
+
+feature_ingest_settings:
+  parquet_output_raw: null
+
+feature_engine_settings:
+  x: longitude
+  y: latitude
+  land_cover: land_cover
+  date_col: date
+  r_data_ouput: trained-fpc-FeatureEngine.RData
+
+image_ingest_settings:
+  

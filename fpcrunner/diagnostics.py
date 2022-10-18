@@ -1,10 +1,10 @@
 import os
 
 from . import runner
-from . import tool
+from . import toolbox
 
 
-class Diagnostics(tool.Tool):
+class Diagnostics(toolbox.Tool):
     def __init__(self, config: str, out_dir: str) -> None:
         super().__init__()
         
