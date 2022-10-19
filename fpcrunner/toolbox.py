@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
 from glob import glob
-from json import tool
 from typing import Any, Dict, List
 import os
 
 from dataclasses import dataclass, InitVar
+
+import geopandas as gpd
+import pandas as pd
+
 
 from fpcrunner import rasutil as ru
 
@@ -52,5 +55,58 @@ class MosaicScores:
         ru.build_mosaic(row_tifs, filename)
 
 
+@dataclass
+class MultiToSingleLandCover:
+    """Aggregate Tool, Re maps values in the spcified column to the values
+    passed. 
+    This tool creates a new dataset of the one provided
+    for example this  can remap bog and fen to one aggreagte of peatland
 
+    Raises:
+        Exception: if the working dir and the output dir are the same
+    """
+    
+    working_dir: str
+    output_dir: str
+    column: str
+    remap_values: Dict[Any, Any]
+    pattern: str = None
+    frac: float = 0.5
 
+    def __post_init__(self):
+        if os.path.samefile(self.working_dir, self.output_dir):
+            raise Exception("The working dir and the output dir cannot be the same directory")
+
+        agg_class = set(self.remap_values.values())
+        if len(agg_class) > 1:
+            raise ValueError("There can only be one aggregate class")
+
+        self.pattern = "*.geojson" if self.pattern is None else self.pattern
+        
+        files: List[str] = glob(self.pattern, recursive=True)
+        reference = files.pop(0)
+
+        df_ref = gpd.read_file(reference)
+        df_ref.replace({self.column: self.remap_values}, inplace=True)
+        
+        cls_subset: pd.DataFrame = df_ref[df_ref[self.column] == agg_class]
+
+        SEED = 1
+        ran_subset = cls_subset.sample(frac=0.5, random_state=SEED)
+        ran_subset.head()
+
+        # Step 5
+        df_new = df_ref.merge(cls_subset, how='left', indicator=True)
+        df_new = df_new[df_new['_merge'] == 'left_only']
+
+        combine = pd.concat([df_new, ran_subset], axis=0)
+        
+        on_series: pd.Series = combine['id']
+        
+        for file in files:
+            df_target = gpd.read_file(file)
+            df_target = pd.merge(on_series, df_target, on=['id'], how='inner')
+            
+            file_name = os.path.basename(file)
+            new_file_name = os.path.join(self.output_dir, file_name)
+            gpd.GeoDataFrame(df_target).to_file(new_file_name)
